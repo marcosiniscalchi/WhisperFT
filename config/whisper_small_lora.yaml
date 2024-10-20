@@ -1,0 +1,54 @@
+training:
+  training_output_dir: "./whisper-small-hi_lora"
+  training_per_device_train_batch_size: 16
+  training_gradient_accumulation_steps: 1
+  training_learning_rate: 1e-5
+  training_warmup_steps: 100
+  training_max_steps: 500
+  training_gradient_checkpointing: False
+  training_fp16 : True
+  training_evaluation_strategy: "steps"
+  training_save_strategy: "steps"
+  trainig_per_device_eval_batch_size: 4
+  training_predict_with_generate: True
+  training_generation_max_length: 225,
+  training_save_steps: 100
+  trainig_eval_steps: 100
+  training_logging_steps: 25
+  training_report_to: "comet_ml"
+  training_run_name: "whisper_hindi_finetuning_lora"
+  training_load_best_model_at_end: True
+  training_metric_for_best_model: "wer"
+  training_greater_is_better: False
+  training_push_to_hub: False
+  training_remove_unused_columns: False
+  training_dataloader_num_workers: 4
+
+model:
+  model_tag: "openai/whisper-small"
+  model_path: "ckpt-whisper-small-hi-base"
+
+peft:
+  peft_r: 16
+  peft_lora_alpha: 16
+  peft_lora_dropout: 0.05
+  peft_bias: "none"
+
+
+tokenizer:
+  tokenizer_tag_or_path: "openai/whisper-small"
+  tokenizer_language: "hi"
+  tokenizer_task: "transcribe"
+
+featextractor:
+  featextractor_sampling_rate: 16000
+  featextractor_max_length_in_second:  30
+  featextractor_padding : "max_length"
+  featextractor_return_tensor:  "pt"
+  featextractor_return_attention_mask: True
+
+data:
+  dataset: "mozilla-foundation/common_voice_11_0"
+  language: "hi"
+  split: "train+validation"
+  
