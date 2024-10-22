@@ -1,5 +1,5 @@
 # WhisperFT
-# Exploring Flan-T5 for Post-ASR Error Correction
+# Exploring FT and LoRA finetuning
 
 This repository contains the code and experiments for fine-tuning Whisper w and w/ LoRA. The project is meant for learning the basic concept for Foundation Models.
 
