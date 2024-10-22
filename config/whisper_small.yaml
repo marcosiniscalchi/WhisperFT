@@ -33,6 +33,12 @@ tokenizer:
   tokenizer_language: "hi"
   tokenizer_task: "transcribe"
 
+
+processor:
+  processor_tag_or_path: "openai/whisper-small"
+  processor_language: "hi"
+  processor_task: "transcribe"
+
 featextractor:
   featextractor_sampling_rate: 16000
   featextractor_max_length_in_second:  30
@@ -44,4 +50,14 @@ data:
   dataset: "mozilla-foundation/common_voice_11_0"
   language: "hi"
   split: "train+validation"
+
+inference:
+  inference_model_tag_or_path: "./ckpt-whisper-small-hi-ft/checkpoint-500"
+  inference_dataset: "mozilla-foundation/common_voice_11_0"
+  inference_split: "test"
+  inference_language: "hi"
+  inference_task: "transcribe"
+  inference_sampling_rate: 16000
+  inference_batch_size: 16
+  
   
