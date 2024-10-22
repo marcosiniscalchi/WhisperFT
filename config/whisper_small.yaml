@@ -1,5 +1,5 @@
 training:
-  training_output_dir: "./whisper-small-hi_workinprogress"
+  training_output_dir: "./ckpt-whisper-small-hi-ft"
   training_per_device_train_batch_size: 16
   training_gradient_accumulation_steps: 1
   training_learning_rate: 0.00001
@@ -16,7 +16,7 @@ training:
   training_eval_steps: 100
   training_logging_steps: 25
   training_report_to: "comet_ml"
-  training_run_name: "whisper_hindi_finetuning_workinprogress"
+  training_run_name: "whisper_hindi_finetuning"
   training_load_best_model_at_end: True
   training_metric_for_best_model: "wer"
   training_greater_is_better: False
@@ -26,7 +26,7 @@ training:
 
 model:
   model_tag: "openai/whisper-small"
-  model_path: "ckpt-whisper-small-hi-base"
+  model_path: "ckpt-whisper-small-hi-ft"
 
 tokenizer:
   tokenizer_tag_or_path: "openai/whisper-small"

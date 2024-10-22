@@ -15,6 +15,7 @@ from addict import Dict as ConfDict
 from dataclasses import dataclass
 from typing import Any, Dict, List, Union
 
+from peft import LoraConfig, LoraModel, TaskType, get_peft_model
 from data_classes.whisper_dataset import WhisperDataset, TextProcessing
 os.environ["TOKENIZERS_PARALLELISM"] = "true"
 from utils.utilities import prepare_compute_metrics
@@ -28,6 +29,33 @@ def train(dataset_tr,dataset_ts, metric, pad_token_id):
     
     # Load model to be finetuned
     model = WhisperForConditionalGeneration.from_pretrained(config.model.model_tag)
+    
+    if config.peft.peft_decoder_only:        
+        # Setupe Lora config to fine-tune only the decoder
+        target_modules = []
+        for id, (name, param) in enumerate(model.named_modules()):
+            if 'model.decoder' in name and ('q_proj' in name or 'v_proj' in name):
+                target_modules.append(name)
+                
+        config_lora = LoraConfig(
+            r=config.peft.peft_r,
+            lora_alpha=config.peft.peft_lora_alpha,
+            target_modules=target_modules,
+            lora_dropout=config.peft.peft_lora_dropout,
+            bias=config.peft.peft_lora_bias,
+        )
+    else:
+            config_lora = LoraConfig(
+                r=config.peft.peft_r,
+                lora_alpha=config.peft.peft_lora_alpha,
+                target_modules="all-linear",
+                lora_dropout=config.peft.peft_lora_dropout,
+                bias=config.peft.peft_bias,
+            )
+
+    lora_model = get_peft_model(model, config_lora)
+    print(lora_model.print_trainable_parameters())
+    
     
     # Load tokenizer for specific language and task
     tokenizer = WhisperTokenizer.from_pretrained(config.tokenizer.tokenizer_tag_or_path, 
@@ -93,12 +121,11 @@ def train(dataset_tr,dataset_ts, metric, pad_token_id):
         dataloader_num_workers=config.training.training_dataloader_num_workers,
         )
     
-    
     compute_metrics = prepare_compute_metrics(tokenizer, metric, pad_token_id)
     
     trainer = Seq2SeqTrainer(
         args=training_args,
-        model=model,
+        model=lora_model,
         train_dataset=ds,
         eval_dataset=ds_ts,
         data_collator=data_collator,
