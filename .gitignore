@@ -2,3 +2,5 @@
 checkpoints/*
 samples/*
 ckpt-whisper-small-hi-ft/*
+ckpt-whisper-small-hi-ft_whisperllama/*
+.vscode/*

@@ -5,28 +5,28 @@ training:
   training_learning_rate: 0.00001
   training_warmup_steps: 100
   training_max_steps: 500
-  training_gradient_checkpointing: False
-  training_fp16: True
+  training_gradient_checkpointing: false
+  training_fp16: true
   training_evaluation_strategy: "steps"
   training_save_strategy: "steps"
   training_per_device_eval_batch_size: 4
-  training_predict_with_generate: True
+  training_predict_with_generate: true
   training_generation_max_length: 225
   training_save_steps: 100
-  training_eval_steps: 100
+  training_eval_steps: 10
   training_logging_steps: 25
   training_report_to: "comet_ml"
-  training_run_name: "whisper_hindi_finetuning"
-  training_load_best_model_at_end: True
+  training_run_name: "whisper_llama_decoder_ft"
+  training_load_best_model_at_end: true
   training_metric_for_best_model: "wer"
-  training_greater_is_better: False
-  training_push_to_hub: False
-  training_remove_unused_columns: False
+  training_greater_is_better: false
+  training_push_to_hub: false
+  training_remove_unused_columns: false
   training_dataloader_num_workers: 4
 
 model:
-  model_tag: "openai/whisper-small"
-  model_path: "ckpt-whisper-small-hi-ft_whisperllama"
+  model_tag: "./ckpt-whisper-small-hi-ft/checkpoint-500" #"openai/whisper-small"
+  model_path: "./ckpt-whisper-small-hi-ft/checkpoint-500"
 
 tokenizer:
   tokenizer_tag_or_path: "openai/whisper-small"
@@ -52,13 +52,13 @@ data:
   split: "train+validation"
 
 inference:
-  inference_model_tag_or_path: "openai/whisper-small" #"./ckpt-whisper-small-hi-ft/checkpoint-500"
-  inference_tokenizer_path: "openai/whisper-small"
+  inference_model_tag_or_path: "./ckpt-whisper-small-hi-ft_whisperllama/checkpoint-500"
+  inference_tokenizer_path: "./ckpt-whisper-small-hi-ft_whisperllama/tokenizer"
   inference_dataset: "mozilla-foundation/common_voice_11_0"
   inference_split: "test"
   inference_language: "hi"
   inference_task: "transcribe"
   inference_sampling_rate: 16000
-  inference_batch_size: 64
+  inference_batch_size: 32
   
   

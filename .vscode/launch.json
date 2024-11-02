@@ -9,8 +9,10 @@
             "type": "debugpy",
             "request": "launch",
             "program": "${file}",
+            "justMyCode": false,
             "console": "integratedTerminal",
-            "args": ["--config", "config/whisper_small.yaml"]
+            "env": {"CUDA_LAUNCH_BLOCKING": "1", "CUDA_VISIBLE_DEVICES": "0", "TORCH_USE_CUDA_DSA": "1"},
+            "args": ["--config", "config/whisper_llama.yaml"]
         }
     ]
 }
